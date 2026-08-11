@@ -1,0 +1,299 @@
+domain AfaDtc version "2.4.7"
+title "AFA DTC Growth"
+description "A versioned workflow pack for DTC market discovery, brand growth, acquisition, retention, and expansion."
+
+port ExploreMarket version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port AnalyzeCompetition version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port ShapeBrand version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port PlanProduct version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port PlanLaunch version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port DiagnoseGrowth version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port PrioritizeAction version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port TrackMetrics version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect read
+}
+
+port CreateAdCreative version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port OptimizePaid version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port BuildRetention version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port ComposeContent version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port ImproveAov version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port PlanSeo version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port ImproveAiVisibility version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port ExpandChannel version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port StabilizeCashflow version "1.0.0" {
+  in { brief: String }
+  out { result: String }
+  effect ffi
+}
+
+port ReviewPlan version "1.0.0" {
+  in { result: String }
+  out { approved: Boolean }
+  effect human
+}
+
+flow FromZeroStart title "从零起步" create {
+  description "从市场探索走到品牌、产品和上市计划。"
+  input { brief: String required label "业务目标" placeholder "例如：为一个新独立站找到首个可验证市场" }
+  needs { ExploreMarket, AnalyzeCompetition, ShapeBrand, PlanProduct, PlanLaunch, ReviewPlan }
+  steps {
+    explore "市场探索" { uses { brief } call ExploreMarket output { result: String } }
+    compete "竞争分析" { uses { result } call AnalyzeCompetition output { result: String } }
+    brand "品牌定位" { uses { result } call ShapeBrand output { result: String } }
+    product "产品策略" { uses { result } call PlanProduct output { result: String } }
+    launch "上市计划" { uses { result } call PlanLaunch output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "开始工作" icon "rocket" }
+}
+
+flow GrowthBottleneck title "增长瓶颈突破" create {
+  description "先诊断增长问题，再按影响与成本排序行动并追踪结果。"
+  input { brief: String required label "增长问题" placeholder "例如：流量上涨但转化率持续下降" }
+  needs { DiagnoseGrowth, PrioritizeAction, TrackMetrics, ReviewPlan }
+  steps {
+    diagnose "增长诊断" { uses { brief } call DiagnoseGrowth output { result: String } }
+    prioritize "行动排序" { uses { result } call PrioritizeAction output { result: String } }
+    measure "效果追踪" { uses { result } call TrackMetrics output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "开始诊断" icon "activity" }
+}
+
+flow AdsSystem title "广告体系搭建" create {
+  description "从品牌定位出发，形成创意、投放与转化协同方案。"
+  input { brief: String required label "广告目标" placeholder "例如：为新品建立首轮 Meta 和 Google 投放计划" }
+  needs { ShapeBrand, CreateAdCreative, OptimizePaid, ReviewPlan }
+  steps {
+    brand "品牌确认" { uses { brief } call ShapeBrand output { result: String } }
+    creative "广告创意" { uses { result } call CreateAdCreative output { result: String } }
+    paid "投放方案" { uses { result } call OptimizePaid output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "搭建广告体系" icon "megaphone" }
+}
+
+flow RetentionSystem title "留存体系搭建" create {
+  description "围绕留存、邮件、短信和客单价建立复购增长路径。"
+  input { brief: String required label "留存目标" placeholder "例如：降低首购用户的流失并提高复购率" }
+  needs { BuildRetention, ComposeContent, ImproveAov, ReviewPlan }
+  steps {
+    retain "留存策略" { uses { brief } call BuildRetention output { result: String } }
+    messages "触达内容" { uses { result } call ComposeContent output { result: String } }
+    aov "客单价优化" { uses { result } call ImproveAov output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "搭建留存体系" icon "repeat-2" }
+}
+
+flow ContentGrowth title "内容营销体系" create {
+  description "将 SEO、AI 搜索可见度、社交内容和创意协同成有机增长计划。"
+  input { brief: String required label "内容目标" placeholder "例如：为一个新市场建立三个月的有机流量计划" }
+  needs { PlanSeo, ImproveAiVisibility, ComposeContent, ReviewPlan }
+  steps {
+    seo "搜索策略" { uses { brief } call PlanSeo output { result: String } }
+    visibility "AI 搜索可见度" { uses { result } call ImproveAiVisibility output { result: String } }
+    content "内容计划" { uses { result } call ComposeContent output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "开始内容规划" icon "file-text" }
+}
+
+flow BrandRefresh title "品牌升级" create {
+  description "先重新理解竞争环境，再更新品牌定位和表达。"
+  input { brief: String required label "品牌问题" placeholder "例如：品牌缺乏辨识度，需要重做定位" }
+  needs { AnalyzeCompetition, ShapeBrand, ReviewPlan }
+  steps {
+    compete "竞争环境" { uses { brief } call AnalyzeCompetition output { result: String } }
+    brand "品牌升级" { uses { result } call ShapeBrand output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "升级品牌" icon "sparkles" }
+}
+
+flow PromotionReadiness title "大促备战" create {
+  description "并行考虑促销产品、广告、转化、邮件和短信触点。"
+  input { brief: String required label "大促目标" placeholder "例如：为年中促销准备完整执行计划" }
+  needs { PlanProduct, CreateAdCreative, OptimizePaid, BuildRetention, ComposeContent, ReviewPlan }
+  steps {
+    product "促销产品" { uses { brief } call PlanProduct output { result: String } }
+    creative "促销创意" { uses { result } call CreateAdCreative output { result: String } }
+    paid "促销投放" { uses { result } call OptimizePaid output { result: String } }
+    retention "促销留存" { uses { result } call BuildRetention output { result: String } }
+    content "促销内容" { uses { result } call ComposeContent output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "准备大促" icon "calendar-check" }
+}
+
+flow ChannelExpansion title "渠道扩展" create {
+  description "评估新渠道，并形成下一步进入或拒绝的依据。"
+  input { brief: String required label "渠道目标" placeholder "例如：评估是否进入 Amazon 或批发渠道" }
+  needs { ExpandChannel, ReviewPlan }
+  steps {
+    expand "渠道评估" { uses { brief } call ExpandChannel output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout form primary "评估渠道" icon "route" }
+}
+
+flow EmergencyStabilization title "紧急止血" create {
+  description "在现金流压力下先识别问题，再提出低风险的快速改善路径。"
+  input { brief: String required label "当前危机" placeholder "例如：现金流紧张、库存积压或广告效率骤降" }
+  needs { DiagnoseGrowth, StabilizeCashflow, BuildRetention, ImproveAov, ReviewPlan }
+  steps {
+    diagnose "危机诊断" { uses { brief } call DiagnoseGrowth output { result: String } }
+    cashflow "现金流方案" { uses { result } call StabilizeCashflow output { result: String } }
+    retention "快速留存" { uses { result } call BuildRetention output { result: String } }
+    aov "利润与客单价" { uses { result } call ImproveAov output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "开始止血" icon "siren" }
+}
+
+flow LevelZeroGuide title "Level 0 从零引导" create {
+  description "从没有明确方向的状态开始，先梳理方向再进入基础建设。"
+  input { brief: String required label "当前方向" placeholder "例如：我还没有明确产品或市场方向" }
+  needs { ExploreMarket, AnalyzeCompetition, ShapeBrand, ReviewPlan }
+  steps {
+    explore "方向梳理" { uses { brief } call ExploreMarket output { result: String } }
+    compete "机会比较" { uses { result } call AnalyzeCompetition output { result: String } }
+    brand "初步定位" { uses { result } call ShapeBrand output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout wizard primary "梳理方向" icon "compass" }
+}
+
+flow PremiumGrowth title "溢价能力构建" create {
+  description "评估产品的溢价空间，并把判断转成产品与利润行动。"
+  input { brief: String required label "利润目标" placeholder "例如：提高产品的可感知价值和利润率" }
+  needs { PlanProduct, ImproveAov, ReviewPlan }
+  steps {
+    product "产品溢价评估" { uses { brief } call PlanProduct output { result: String } }
+    aov "利润优化" { uses { result } call ImproveAov output { result: String } }
+    review "人工确认" { uses { result } call ReviewPlan output { approved: Boolean } }
+  }
+  output {
+    result: String from result
+    approved: Boolean from approved
+  }
+  ui { layout form primary "评估溢价" icon "badge-dollar-sign" }
+}
