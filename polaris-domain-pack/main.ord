@@ -1,6 +1,8 @@
 domain AfaDtc version "2.4.7"
 title "AFA DTC Growth"
 description "A versioned workflow pack for DTC market discovery, brand growth, acquisition, retention, and expansion."
+category "Ecommerce"
+accent "blue"
 
 port ExploreMarket version "1.0.0" {
   in { brief: String }
